@@ -3,3 +3,33 @@ https://www.enterprisedb.com/postgresql-tutorial-resources-training?cid=55
 https://ftp.postgresql.org/pub/pgadmin/pgadmin4/v5.0/windows/pgadmin4-5.0-x64.exe
 
 https://dbeaver.io/files/dbeaver-ce-latest-x86_64-setup.exe
+
+Postgres 11.11.1 Installation
+======================================================================================================================================================
+
+$workdir = "C:\apps"
+
+              # Check if work directory exists if not create it
+
+              If (Test-Path -Path $workdir -PathType Container){
+               
+              Write-Host "$workdir already exists" -ForegroundColor Red
+              }else { 
+              
+                New-Item -Path $workdir  -ItemType directory 
+              }
+
+              $source = "https://www.enterprisedb.com/postgresql-tutorial-resources-training?cid=55"
+
+              $destination = "$workdir\postgresql.exe"
+
+
+              If (Get-Command 'Invoke-Webrequest') {
+                Invoke-WebRequest $source -OutFile $destination
+              }else { $WebClient = New-Object System.Net.WebClient
+                $webclient.DownloadFile($source, $destination)
+              }
+              # Start the installation
+            
+              Start-Process -FilePath "$workdir\postgresql.exe" -ArgumentList "--mode unattended --unattendedmodeui none" -Wait
+======================================================================================================================================================
