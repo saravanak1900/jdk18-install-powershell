@@ -9,27 +9,27 @@ Postgres 11.11.1 Installation
 
 $workdir = "C:\apps"
 
-              # Check if work directory exists if not create it
+# Check if work directory exists if not create it
 
-              If (Test-Path -Path $workdir -PathType Container){
-               
-              Write-Host "$workdir already exists" -ForegroundColor Red
-              }else { 
-              
-                New-Item -Path $workdir  -ItemType directory 
-              }
+If (Test-Path -Path $workdir -PathType Container){
 
-              $source = "https://www.enterprisedb.com/postgresql-tutorial-resources-training?cid=55"
+Write-Host "$workdir already exists" -ForegroundColor Red
+}else { 
 
-              $destination = "$workdir\postgresql.exe"
+New-Item -Path $workdir  -ItemType directory 
+}
+
+$source = "https://sbp.enterprisedb.com/getfile.jsp?fileid=1257519&_ga=2.13766583.1687951497.1615906892-170827142.1615906892"
+
+$destination = "$workdir\postgresql.exe"
 
 
-              If (Get-Command 'Invoke-Webrequest') {
-                Invoke-WebRequest $source -OutFile $destination
-              }else { $WebClient = New-Object System.Net.WebClient
-                $webclient.DownloadFile($source, $destination)
-              }
-              # Start the installation
-            
-              Start-Process -FilePath "$workdir\postgresql.exe" -ArgumentList "--mode unattended --unattendedmodeui none" -Wait
+If (Get-Command 'Invoke-Webrequest') {
+Invoke-WebRequest $source -OutFile $destination
+}else { $WebClient = New-Object System.Net.WebClient
+$webclient.DownloadFile($source, $destination)
+}
+# Start the installation
+
+Start-Process -FilePath "$workdir\postgresql.exe" -ArgumentList "--mode unattended --unattendedmodeui none" -Wait
 ======================================================================================================================================================
