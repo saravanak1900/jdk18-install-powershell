@@ -24,11 +24,9 @@ $source = "https://sbp.enterprisedb.com/getfile.jsp?fileid=1257519&_ga=2.1376658
 $destination = "$workdir\postgresql.exe"
 
 
-If (Get-Command 'Invoke-Webrequest') {
-Invoke-WebRequest $source -OutFile $destination
-}else { $WebClient = New-Object System.Net.WebClient
+$WebClient = New-Object System.Net.WebClient
 $webclient.DownloadFile($source, $destination)
-}
+
 # Start the installation
 
 Start-Process -FilePath "$workdir\postgresql.exe" -ArgumentList "--mode unattended --unattendedmodeui none" -Wait
