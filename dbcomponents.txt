@@ -90,3 +90,35 @@ $webclient.DownloadFile($source, $destination)
 
 Start-Process -FilePath "$workdir\dbeaver.exe" -ArgumentList "/S /allusers" -Wait
 ======================================================================================================================================================
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+AWS SSM Agent Update
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+$workdir = "C:\apps"
+
+# Check if work directory exists if not create it
+
+If (Test-Path -Path $workdir -PathType Container){
+               
+ Write-Host "$workdir already exists" -ForegroundColor Red
+ }else { 
+          
+       New-Item -Path $workdir  -ItemType directory 
+}
+
+$source = "https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/windows_amd64/AmazonSSMAgentSetup.exe"
+
+$destination = "$workdir\SSMAgent_latest.exe"
+
+
+If (Get-Command 'Invoke-Webrequest') {
+     Invoke-WebRequest $source -OutFile $destination
+}else { $WebClient = New-Object System.Net.WebClient
+        $webclient.DownloadFile($source, $destination)
+}
+# Start the installation
+            
+Start-Process -FilePath "$workdir\SSMAgent_latest.exe" -ArgumentList "/S" -Wait
+Restart-Service AmazonSSMAgent
+Start-Sleep 35
